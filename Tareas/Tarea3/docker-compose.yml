@@ -1,0 +1,31 @@
+version: '3'
+services:
+  base:
+    image: "mysql"
+    container_name: 'bd-mysql-t3'
+    environment:
+      MYSQL_ROOT_PASSWORD: 123
+    volumes:
+      - base_t:/var/lib/mysql      
+    ports:
+      - "3306:3306"
+  backend:
+    build: ./api-go 
+    image: "app-golang"
+    container_name: 'Backend_Go'
+    environment:
+      DB_USER : root
+      DB_PASSWORD : 123
+      DB_HOST : base
+      DB_PORT : 3306
+      DB_NAME : tarea3
+    ports:
+      - "8000:8000"
+  frontend:
+    build: ./my-app
+    image: "frontend-react"
+    container_name: 'Frontend_React'
+    ports:
+      - "3000:3000"
+volumes:
+  base_t: 
