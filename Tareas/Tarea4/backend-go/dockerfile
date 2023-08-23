@@ -1,0 +1,17 @@
+# Utiliza una imagen base de Golang
+FROM golang:latest
+
+# Establece el directorio de trabajo dentro del contenedor
+WORKDIR /app
+
+# Copia los archivos del proyecto al contenedor (asegúrate de tener un archivo go.mod)
+COPY . .
+
+# Compila la aplicación Go dentro del contenedor
+RUN go build -o main .
+
+# Expone el puerto en el que la aplicación escucha (cambia el puerto si es necesario)
+EXPOSE 8080
+
+# Comando para ejecutar la aplicación cuando se inicia el contenedor
+CMD ["./main"]

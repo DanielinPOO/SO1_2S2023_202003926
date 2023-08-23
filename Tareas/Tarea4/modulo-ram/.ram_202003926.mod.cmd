@@ -1,0 +1,1 @@
+cmd_/home/daniel/Escritorio/actividades_lab_so1/Tareas/Tarea4/modulo-ram/ram_202003926.mod := printf '%s\n'   ram_202003926.o | awk '!x[$$0]++ { print("/home/daniel/Escritorio/actividades_lab_so1/Tareas/Tarea4/modulo-ram/"$$0) }' > /home/daniel/Escritorio/actividades_lab_so1/Tareas/Tarea4/modulo-ram/ram_202003926.mod
