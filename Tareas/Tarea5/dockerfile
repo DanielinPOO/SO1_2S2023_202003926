@@ -1,0 +1,57 @@
+# Usa una imagen base de Python 3.8
+FROM python:3.8
+
+# Establece el directorio de trabajo en /Tarea5
+WORKDIR /Tarea5
+
+# Instala Flask en el contenedor
+RUN pip3 install Flask
+
+# Copia tu código de la aplicación al directorio de trabajo en el contenedor
+COPY api.py .
+
+# Expone el puerto en el que tu aplicación Flask escucha (por defecto 5000)
+EXPOSE 5000
+
+# Comando para ejecutar tu aplicación cuando se inicie el contenedor
+CMD ["python", "api.py"]
+
+# Construye la imagen con el comando:
+# docker build -t <nombre_imagen> .
+
+# Correr el contenedor con el comando:
+# docker run -p 5000:5000 <nombre_imagen>
+
+# Para probar la aplicación, abre un navegador y ve a la dirección:
+# http://localhost:5000/
+
+# Para detener el contenedor, usa el comando:
+# docker stop <nombre_contenedor>
+
+# Para eliminar el contenedor, usa el comando:
+# docker rm <nombre_contenedor>
+
+# Para eliminar la imagen, usa el comando:
+# docker rmi <nombre_imagen>
+
+# Para ver los contenedores en ejecución, usa el comando:
+# docker ps
+
+# Para ver todos los contenedores, usa el comando:
+# docker ps -a
+
+# Para ver las imágenes, usa el comando:
+# docker images
+
+# Para ver los volúmenes, usa el comando:
+# docker volume ls
+
+# Para ver las redes, usa el comando:
+# docker network ls
+
+# Subir la imagen a Docker Hub:
+# docker login
+# docker tag mi-aplicacion-flask:1.0 tu-nombre-de-usuario/mi-aplicacion-flask:1.0
+# docker push tu-nombre-de-usuario/mi-aplicacion-flask:1.0
+# docker pull nombre-de-usuario/nombre-de-la-imagen:etiqueta
+
