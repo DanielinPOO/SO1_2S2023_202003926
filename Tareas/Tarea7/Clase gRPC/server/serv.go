@@ -34,7 +34,7 @@ type Data struct {
 
 func mysqlConnect() {
 	// Cambia las credenciales según tu configuración de MySQL
-	dsn := "root:HU&8\\O7QDqH5$&/*@tcp(35.237.25.189)/proyecto2"
+	dsn := ""
 
 	var err error
 	db, err = sql.Open("mysql", dsn)
