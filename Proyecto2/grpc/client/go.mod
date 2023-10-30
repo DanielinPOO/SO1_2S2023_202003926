@@ -1,6 +1,6 @@
 module ejemplo_despliegue
 
-go 1.21.3
+go 1.23
 
 require (
 	github.com/gofiber/fiber/v2 v2.50.0

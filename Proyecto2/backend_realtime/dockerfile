@@ -1,0 +1,20 @@
+# Usamos una imagen de Node.js como base
+FROM node:14
+
+# Establecemos el directorio de trabajo en el contenedor
+WORKDIR /usr/src/app
+
+# Copiamos el package.json y package-lock.json al directorio de trabajo
+COPY package*.json ./
+
+# Instalamos las dependencias
+RUN npm install
+
+# Copiamos el resto de la aplicación
+COPY . .
+
+# Exponemos el puerto en el que se ejecutará la aplicación
+EXPOSE 3001
+
+# Comando para iniciar la aplicación
+CMD ["node", "app.js"]

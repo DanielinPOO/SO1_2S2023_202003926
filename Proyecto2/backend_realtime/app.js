@@ -15,7 +15,7 @@ const io = socketIo(server, {
     },
   });
   
-//const redis = new Redis(); // Crea una instancia de Redis
+const redis = new Redis(); // Crea una instancia de Redis
 
 // Configura rutas de Express aquí...
 // Configura CORS
@@ -23,28 +23,27 @@ app.use(cors());
 // Configura body-parser
 app.use(bodyParser.json());
 
-/*io.on('connection', async (socket) => {
+io.on('connection', async (socket) => {
     console.log('Cliente conectado');
   
     // Función para consultar las claves en Redis y enviarlas al cliente
-    const sendRedisKeys = async () => {
+    const sendNumberAllRegisters = async () => {
       try {
         // Consulta todas las claves en la base de datos 0
-        const keys = await redis.keys('*');
-        console.log('Claves de Redis:', keys);
+        const number = await consultarAPI()
         // Envía las claves al cliente a través del socket
-        socket.emit('redis-keys', keys);
+        socket.emit('number', number);
       } catch (error) {
-        console.error('Error al consultar las claves de Redis:', error);
+        console.error('Error al consultar el numer de registros en  Redis:', error);
       }
     };
   
-    // Llama a sendRedisKeys al conectar y luego cada 10 segundos
-    sendRedisKeys(); // Llama a la función al conectar
+    // Llama a sendNumberAllRegisters al conectar y luego cada 10 segundos
+    sendNumberAllRegisters(); // Llama a la función al conectar
   
     const redisUpdateInterval = setInterval(() => {
-      sendRedisKeys(); // Llama a la función cada 10 segundos
-    }, 10000); // 10 segundos en milisegundos
+      sendNumberAllRegisters(); // Llama a la función cada 10 segundos
+    }, 100); // 10 segundos en milisegundos
   
     // Maneja eventos de Socket.IO aquí...
   
@@ -53,7 +52,32 @@ app.use(bodyParser.json());
       clearInterval(redisUpdateInterval); // Detiene la actualización cuando el cliente se desconecta
     });
   });
-*/
+
+function consultarAPI() {
+
+    return new Promise((resolve, reject) => {
+      // Realiza una solicitud GET a la API para obtener los valores únicos de maquina
+      fetch('http://localhost:3300/count-redis') // Asegúrate de utilizar la URL correcta
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('No se pudo obtener el total de registros');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("data", data);
+          // Llena el <select> con los valores obtenidos de la API
+          resolve(data.total_registros_redis - 1);
+        })
+        .catch((error) => {
+          console.error(error);
+          // Puedes manejar el error de acuerdo a tus necesidades
+          reject(error);
+        });
+    });
+  }
+
+
 
 // Ruta para consultar el valor de una clave en Redis y devolverlo como JSON
 app.get('/api/redis-value', async (req, res) => {
@@ -83,10 +107,6 @@ app.get('/api/redis-value', async (req, res) => {
   
   // Configuración de la conexión a la base de datos
   const connection = mysql.createConnection({
-    host: 'aqui va la ip de la base de datos',
-    user: 'root',
-    password: 'aqui va la contraseña',
-    database: 'proyecto2',
   });
   
   // Establecer la conexión

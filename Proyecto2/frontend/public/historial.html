@@ -47,8 +47,8 @@
                 <h1>Cantidad de Alumnos en un Curso y Semestre Específico</h1>
                 <label for="semestreSelect">Selecciona un semestre:</label>
                 <select id="semestreSelect" class="form-select">
-                    <option value="primer">Primer Semestre</option>
-                    <option value="segundo">Segundo Semestre</option>
+                    <option value="1S">Primer Semestre</option>
+                    <option value="2S">Segundo Semestre</option>
                 </select>
                 <div class="chart-container">
                     <canvas id="alumnosChart"></canvas>
@@ -69,6 +69,6 @@
 
 </body>
 <script src="utils.js"></script>
-<script src="graficas_history.js"></script>
+<script type="module" src="graficas_history.js"></script>
 <script src="load_options.js"></script>
 </html>

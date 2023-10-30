@@ -1,0 +1,177 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: so1p2
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+  namespace: so1p2
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /grpc
+        pathType: Prefix
+        backend:
+          service:
+            name: grpc-service
+            port:
+              number: 3000
+      - path: /python
+        pathType: Prefix
+        backend:
+          service:
+            name: python-service
+            port:
+              number: 3000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grpc-service
+  namespace: so1p2
+spec:
+  selector:
+    app: grpc-app
+  ports:
+  - protocol: TCP
+    port: 3000
+    targetPort: 3000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grpc-app
+  namespace: so1p2
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: grpc-app
+  template:
+    metadata:
+      labels:
+        app: grpc-app
+    spec:
+      containers:
+      - name: grpc-client
+        image: tu_imagen_de_dockerhub/grpc-client:latest
+        ports:
+        - containerPort: 3000
+      - name: grpc-server
+        image: tu_imagen_de_dockerhub/grpc-server:latest
+        ports:
+        - containerPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: python-service
+  namespace: so1p2
+spec:
+  selector:
+    app: python-app
+  ports:
+  - protocol: TCP
+    port: 3000
+    targetPort: 3000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-app
+  namespace: so1p2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python-app
+  template:
+    metadata:
+      labels:
+        app: python-app
+    spec:
+      containers:
+      - name: python-app
+        image: tu_imagen_de_dockerhub/python-app:latest
+        ports:
+        - containerPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service
+  namespace: so1p2
+spec:
+  selector:
+    app: redis-app
+  ports:
+  - protocol: TCP
+    port: 6379
+    targetPort: 6379
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-app
+  namespace: so1p2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-app
+  template:
+    metadata:
+      labels:
+        app: redis-app
+    spec:
+      containers:
+      - name: redis-container
+        image: tu_imagen_de_dockerhub/redis:latest
+        ports:
+        - containerPort: 6379
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-backend-service
+  namespace: so1p2
+spec:
+  selector:
+    app: node-backend-app
+  ports:
+  - protocol: TCP
+    port: 3000
+    targetPort: 3000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-backend-app
+  namespace: so1p2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-backend-app
+  template:
+    metadata:
+      labels:
+        app: node-backend-app
+    spec:
+      containers:
+      - name: node-backend-container
+        image: tu_imagen_de_dockerhub/node-backend:latest
+        ports:
+        - containerPort: 3000

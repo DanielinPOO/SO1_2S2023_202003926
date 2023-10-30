@@ -1,0 +1,17 @@
+# Utiliza la imagen base de Python
+FROM python:3.8
+
+# Establece el directorio de trabajo en el contenedor
+WORKDIR /app
+
+# Copia los archivos de tu aplicación al contenedor
+COPY . .
+
+# Instala las dependencias
+RUN pip install Flask Flask-Cors redis mysql-connector-python
+
+# Expone el puerto en el que se ejecutará tu aplicación
+EXPOSE 3000
+
+# Comando para ejecutar tu aplicación Flask
+CMD ["python", "app.py"]  # Asegúrate de que el archivo de tu aplicación Flask se llame "app.py"

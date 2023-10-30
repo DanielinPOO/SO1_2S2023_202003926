@@ -1,0 +1,30 @@
+# Utiliza la imagen base de Go 1.23
+FROM golang:1.23
+
+# Establece el directorio de trabajo en el contenedor
+WORKDIR /app
+
+# Copia los archivos de tu aplicación al contenedor
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copia el código fuente de tu aplicación
+COPY . .
+
+# Compila tu aplicación
+RUN go build -o grpc-client
+
+# Utiliza una imagen aún más ligera como base para la ejecución
+FROM alpine:latest
+
+# Copia el binario de tu aplicación desde la imagen del compilador
+COPY --from=builder /app/grpc-client /app/grpc-client
+
+# Instala las dependencias de tu aplicación en el contenedor
+RUN apk --no-cache add ca-certificates
+
+# Establece el directorio de trabajo en el contenedor
+WORKDIR /app
+
+# Comando para ejecutar tu cliente gRPC
+CMD ["./grpc-client"]
